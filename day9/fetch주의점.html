@@ -1,0 +1,162 @@
+//fetch_3.html
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Fetch 고급 특징 실습</title>
+</head>
+<body>
+    <h1>Fetch 고급 특징 3가지 실습</h1>
+
+    <button onclick="example1()">1. HTTP 오류는 reject가 아니다</button><br><br>
+    <button onclick="example2()">2. response.json()은 한 번만 사용 가능</button><br><br>
+    <button onclick="example3()">3. JSON 변환도 비동기</button><br><br>
+    <button onclick="example4()">4. 오류 발생 처리</button><br><br>
+
+    <script>
+        /* ===============================================================
+           1. HTTP 에러도 reject 아님
+           ---------------------------------------------------------------
+           fetch는 "네트워크 자체가 끊긴 경우"만 reject가 발생함.
+           
+           즉,
+           ✔ 404 Not Found → catch 실행 X
+           ✔ 500 Server Error → catch 실행 X 
+           반대로,
+           ✔ 인터넷 끊김 / DNS 실패 → catch 실행 
+           
+           그래서 HTTP 에러를 잡으려면 response.ok를 반드시 검사해야 한다.
+        =============================================================== */
+        function example1() {
+            console.log("---- 1번 예제 시작 ----");
+
+            fetch("https://jsonplaceholder.typicode.com/INVALID_URL") 
+                // 존재하지 않는 endpoint → HTTP 에러 404 발생
+                .then(response => {
+                    console.log("response.status:", response.status); // 404
+                    console.log("response.ok:", response.ok);         // false
+
+                    // HTTP 에러지만 catch가 실행되지 않는다!
+                    // 그러므로 반드시 ok 체크 필요
+                    if (!response.ok) {
+                        throw new Error("HTTP 오류 발생! 상태코드: " + response.status);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("데이터:", data);
+                })
+                .catch(error => {
+                    console.error("catch 실행됨:", error.message);
+                });
+        }
+
+
+
+
+        /* ===============================================================
+           2. response.json()은 단 한 번만 호출 가능
+           ---------------------------------------------------------------
+           response.body는 "스트림(stream)"이다.
+           JSON 변환은 스트림을 '읽는 과정'이므로 한 번 읽으면 끝.
+           
+           두 번째 json() 호출 시 에러 발생:
+           → TypeError: body stream already read
+        =============================================================== */
+        function example2() {
+            console.log("---- 2번 예제 시작 ----");
+
+            fetch("https://jsonplaceholder.typicode.com/posts/1")
+                .then(response => {
+                    // 첫 번째 json() 정상 작동
+                    const first = response.json();
+                    console.log("첫 번째 JSON 파싱:", first);
+
+                    // 두 번째 json() → 스트림이 이미 읽혀 오류 발생
+                    const second = response.json(); // 에러
+                    console.log("두 번째 JSON 파싱:", second);
+
+                    return first;
+                })
+                .then(data => console.log("결과:", data))
+                .catch(error => console.error("catch 실행됨:", error));
+        }
+
+
+
+
+        /* ===============================================================
+           3. JSON 변환도 비동기 → Promise 반환
+           ---------------------------------------------------------------
+           response.json()은 즉시 JSON을 반환하지 않는다.
+            내부적으로 스트림을 읽는 작업이 비동기로 이루어짐
+            따라서 Promise 형태로 반환됨
+           
+           → 반드시 .then() 또는 await 사용해야 한다.
+        =============================================================== */
+        function example3() {
+            console.log("---- 3번 예제 시작 ----");
+
+            fetch("https://jsonplaceholder.typicode.com/users/1")
+                .then(response => {
+                    // json()은 Promise를 반환함
+                    const jsonPromise = response.json();
+                    console.log("response.json() 반환값:", jsonPromise);
+
+                    // 여기에서는 아직 데이터가 완성되지 않음
+                    return jsonPromise; // 다음 then에서 처리됨
+                })
+                .then(data => {
+                    console.log("파싱된 JSON 데이터:", data);
+                });
+        }
+
+
+
+
+        /* ===============================================================
+           4. 오류 발생 시 오류가 제대로 catch문으로 분기 할 수 있도록 코드를 수정하세요
+
+           body, id,title, userId 를 화면에 출력하세요
+           catch 문을 탈 수 있도록 api 주소를 이상하게 변경 후 오류 발생을 시켜보세요
+        =============================================================== */
+        function example4() {
+            console.log("---- 4번 예제 시작 ----");
+
+            fetch("https://jsonplaceholder.typicode.com/posts/1") // api 호출 (request) -- Promise 객체기 때문에 응답을 .then 또는 .catch로 받아야 한다
+                .then(response => { // 응답(response) 을 받음 -> 이름을 마음대로 변환할 수 있다
+                    // response.ok 로 오류를 분기
+                    console.log(`응답 : ${response}`);
+                    console.log(response);
+                    if(!response.ok){
+                        throw new Error(`오류 발생!!! 상태코드 : ${response.status}`);
+                    }
+                    // 첫 번째 json() 정상 작동
+                    const first = response.json(); // 첫 번째로 받은 응답 데이터를 json으로 변환해준다. 이 과정이 없으면 데이터 추출 및 시각화를 할 수가 없다.
+                    console.log("첫 번째 JSON 파싱 : ", first);
+
+                    return first; // 다음 then 으로 데이터를 넘겨준다.
+                })
+                .then(data => {
+                    console.log("결과:", data);// 첫 번째로 받은 응답 데이터를 json으로 변환 후 그 데이터를 받는다
+                    console.log("body:", data.body);
+                    console.log("id:", data.id);
+                    console.log("title:", data.title);
+                    console.log("userId:", data.userId);
+                })
+                .catch(error => console.error("catch 실행됨:", error)); // !response.ok 에서 에러를 던져줘야 받을 수 있다.
+                // finally는 써도 되고 안써도 되지만 쓰는 버릇을 기르도록 하자
+
+                /*
+                1. 첫 번째 then 에서 무조건 .json() 제이슨 파싱을 진행한다. -> 파싱된 데이터 return
+                2. 두 번쨰 then 에서 첫 번째 then 에서 return 된 데이터를 받아 출력하거나 사용 한다.
+                3. then의 인자명은 변경 가능하다
+                4. 첫 then 에서 response.ok를 통해 오류를 발생시켜야 한다. -> catch 블럭은 당연히 있어야한다
+                5. finally 를 쓰는 버릇을 들이자. console.log로 데이터 통신 종료 하는 것이라도 넣어두자.
+                */
+        }
+
+    </script>
+</body>
+</html>

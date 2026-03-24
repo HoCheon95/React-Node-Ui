@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Axios CRUD 실습</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <h1>Axios CRUD 실습</h1>
+
+    <button id="btnRead">GET : 데이터 조회</button>
+    <div id="readResult"></div>
+    <hr />
+
+    <button id="btnCreate">POST : 데이터 생성</button>
+    <div id="createResult"></div>
+    <hr />
+
+    <button id="btnUpdate">PUT/PATCH : 데이터 수정</button>
+    <div id="updateResult"></div>
+    <hr />
+
+    <button id="btnDelete">DELETE : 데이터 삭제</button>
+    <div id="deleteResult"></div>
+    <hr />
+
+    <script>
+      const API_URL = "https://jsonplaceholder.typicode.com/posts";
+
+      /*
+      1. READ
+      GET 요청으로 데이터 가져오기
+      */
+      document.getElementById("btnRead").addEventListener("click", () => {
+        axios
+          .get(API_URL)
+          .then((res) => {
+            //json 파싱이 필요없다. res.data 에 JSON 배열이 들어있음
+            const list = res.data
+              .slice(0, 5)
+              .map((post) => `<div>${post.id}: ${post.title}</div>`)
+              .join("");
+            document.getElementById("readResult").innerHTML = list;
+          })
+          .catch((err) => {
+            document.getElementById("readResult").innerHTML = "조회 실패";
+            console.log(err);
+          });
+      });
+
+      /*
+      2. POST(INSERT) - POST 요청으로 새 데이터 주기
+      */
+      document.getElementById("btnCreate").addEventListener("click", () => {
+        axios
+          .post(API_URL, {
+            title: "새 글 제목",
+            body: "내용",
+            userId: 1,
+          })
+          .then((res) => {
+            document.getElementById("createResult").innerHTML =
+              `생성 완료: id = ${res.data.userId}, title = ${res.data.title}`;
+          })
+          .catch((err) => {
+            document.getElementById("createResult").innerHTML = "생성 실패";
+            console.log(err);
+          });
+      });
+
+      /*
+      3. PUT/PATCH(UPDATE) - 요청으로 기존 데이터 수정
+      */
+      document.getElementById("btnUpdate").addEventListener("click", () => {
+        axios
+          .put(`${API_URL}/1`, {
+            //id = 1 인 데이터 수정
+            title: "수정된 제목",
+            body: "수정된 내용",
+            userId: 1,
+          })
+          .then((res) => {
+            document.getElementById("updateResult").innerHTML =
+              `수정 완료: id = ${res.data.id}, title = ${res.data.title}`;
+          })
+          .catch((err) => {
+            document.getElementById("updateResult").innerHTML = "수정 실패";
+            console.log(err);
+          });
+      });
+
+      /*
+      4. DELETE - 요청으로 데이터 삭제
+      */
+      document.getElementById("btnDelete").addEventListener("click", () => {
+        axios
+          .delete(`${API_URL}/1`) //id = 1 인 데이터 삭제
+          .then((res) => {
+            document.getElementById("deleteResult").innerHTML = `삭제 완료`;
+          })
+          .catch((err) => {
+            document.getElementById("deleteResult").innerHTML = "삭제 실패";
+            console.log(err);
+          });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>async/await 실습</title>
+</head>
+
+<body>
+    <h1>async/await 실습</h1>
+    <p>개발자 도구(F12)를 열어 결과를 확인</p>
+
+    <script>
+        // 1. async는 await를 사용하기 위한 선언이다.
+
+        async function ex1() {
+            console.log("ex1 시작");
+
+            const result = await new Promise(resolve => {
+                setTimeout(() => resolve("1초 뒤 결과"), 1000);
+            });
+
+            console.log(`ex1 결과 : ${result}`);
+        }
+        ex1();
+
+        // 2. async 함수의 리턴은 언제나 Promise 로 감싸져 반환된다.
+        async function ex2() {
+            return "일반 문자열 반환";
+        }
+
+        ex2().then(result => {
+            console.log(`async 리턴 값 : ${result}`);
+        });
+
+        console.log(ex2());
+
+        // test라는 async 함수를 생성하고 숫자를 return 하여 return 값을 콘솔로 출력하시오
+        async function test() {
+            return 100;
+        }
+
+        test().then(res =>{
+            console.log(`숫자열 리턴 : ${res}`);
+        });
+
+        // 3. async 리턴 값을 직접 resolve(성공)/reject(실패)로 지정 가능하다.
+        async function ex3() {
+            return Promise.resolve("성공 상태로 리턴");
+        }
+
+        async function ex4() {
+            return Promise.reject("실패 상태로 리턴");
+        }
+
+        ex3().then(res => console.log(`성공 : ${res}`));
+        ex4().catch(err => console.log(`실패 : ${err}`));
+
+        // 4. async 함수 자체에 then() 핸들러를 붙일 수 있다.
+        async function ex5() {
+            return "async 함수는 항상 Promise를 반환하므로 then 사용 가능";
+        }
+
+        ex5().then(msg => {
+            console.log(`함수 결과 받기 : ${msg}`);
+        });
+    </script>
+</body>
+
+</html>

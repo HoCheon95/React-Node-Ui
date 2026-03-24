@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>axios 실습</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <h1>axios 실습</h1>
+    <script>
+      /*
+      문제 1. GET 요청 실습
+
+      https://jsonplaceholder.typicode.com/posts/1 API를 사용하여 글의 title과 body를 콘솔에 출력하세요.
+
+      조건
+      1) Axios 사용
+      2) 성공 시 .then() 사용
+      3) 실패 시 .catch() 사용
+
+      문제 2. POST 요청 실습
+
+      https://jsonplaceholder.typicode.com/posts API에 새 글을 POST하세요.
+
+      조건
+      1) 요청 데이터: { title: "Axios Test", body: "Axios POST 연습", userId: 1 }
+      2) 요청 성공 시 서버 응답(JSON)을 콘솔에 출력
+      3) 요청 실패 시 오류 메시지를 콘솔에 출력
+
+      //PUT 이랑 DELETE 코드까지 다 작성해보는 걸로
+      */
+      const API_URL = "https://jsonplaceholder.typicode.com/posts";
+
+      // document.addEventListener("DOMContentLoaded", () => {
+      axios
+        .get(`${API_URL}/1`)
+        .then((res) => {
+          console.log(
+            `title = ${res.data.title}
+            body = ${res.data.body}`,
+          );
+        })
+        .catch((err) => {
+          console.log(`에러 발생 : ${err}`);
+        });
+
+      axios
+        .post(API_URL, {
+          title: "제목1",
+          body: "내용1",
+          userId: 1,
+        })
+        .then((res) => {
+          console.log(
+            `생성 완료 : userId = ${res.data.userId}, title = ${res.data.title}, body = ${res.data.body}`,
+          );
+        })
+        .catch((err) => {
+          console.log(`생성 실패 : ${err}`);
+        });
+
+      axios
+        .put(`${API_URL}/1`, {
+          title: "수정된 제목1",
+          body: "수정된 내용1",
+          userId: 1,
+        })
+        .then((res) => {
+          console.log(
+            `수정 완료 : userId = ${res.data.userId}, title = ${res.data.title}, body = ${res.data.body}`,
+          );
+        })
+        .catch((err) => {
+          console.log(`수정 실패 : ${err}`);
+        });
+
+      axios
+        .delete(`${API_URL}/1`)
+        .then((res) => {
+          console.log(`삭제 완료`);
+        })
+        .catch((err) => {
+          console.log(`삭제 실패 : ${err}`);
+        });
+      // });
+    </script>
+  </body>
+</html>

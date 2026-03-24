@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>콜백 지옥 / 프로미스 / async/await</title>
+</head>
+
+<body>
+    <h1>콜백 지옥 / 프로미스 / async/await</h1>
+
+    <button onclick="runCallbackHell()">콜백 지옥 실행</button>
+    <button onclick="runPromiseHell()">프로미스 지옥 실행</button>
+    <button onclick="runAsyncAwait()">async/await 실행</button>
+
+    <script>
+        // 비동기 요청을 흉내내기 위한 함수
+        function fakeRequest(msg, delay) {
+            return new Promise((resolve => {
+                setTimeout((msg), delay);
+            }));
+        }
+
+        // 콜백 지옥 : 중첩 구조 때문에 가독성이 떨어짐, 흐름파악이 어렵고 유지보수가 힘들다
+        function runCallbackHell() {
+            console.clear();
+            console.log("콜백 지옥 시작");
+
+            setTimeout(() => {
+                console.log("1단계 완료");
+
+                setTimeout(() => {
+                    console.log("2단계 완료");
+
+                    setTimeout(() => {
+                        console.log("3단계 완료");
+
+                        setTimeout(() => {
+                            console.log("4단계 완료");
+                        }, 500);
+                    }, 500);
+                }, 500);
+            }, 500);
+        }
+
+        // 프로미스 지옥 : then().then().then() 이 반복되는 지옥 : 콜백 지옥보단 낫지만 여전히 가독성이 좋지 않다.
+        function runPromiseHell() {
+            console.clear();
+            console.log("프로미스 지옥 시작");
+
+            fakeRequest("1단계 완료", 500)
+                .thne(res =>{
+                    console.log(res);
+                    return fakeRequest("2단계 완료", 500);
+                })
+                .thne(res =>{
+                    console.log(res);
+                    return fakeRequest("3단계 완료", 500);
+                })
+                .thne(res =>{
+                    console.log(res);
+                    return fakeRequest("4단계 완료", 500);
+                })
+                .thne(res =>{
+                    console.log(res);
+                })
+        }
+
+        // async/await : 마치 동기 코드를 작성하듯 직관적이다. 가독성 최고, 유지보수 용이
+        async function runAsyncAwait() {
+            console.clear();
+            console.log("async/await 시작");
+
+            const step1 = await fakeRequest("1단계 완료", 500);
+            console.log(step1);
+
+            const step2 = await fakeRequest("2단계 완료", 500);
+            console.log(step1);
+
+            const step3 = await fakeRequest("3단계 완료", 500);
+            console.log(step1);
+            
+            const step4 = await fakeRequest("4단계 완료", 500);
+            console.log(step1);
+        }
+
+    </script>
+</body>
+
+</html>

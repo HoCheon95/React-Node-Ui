@@ -49,19 +49,19 @@
             console.log("프로미스 지옥 시작");
 
             fakeRequest("1단계 완료", 500)
-                .thne(res =>{
+                .then(res =>{
                     console.log(res);
                     return fakeRequest("2단계 완료", 500);
                 })
-                .thne(res =>{
+                .then(res =>{
                     console.log(res);
                     return fakeRequest("3단계 완료", 500);
                 })
-                .thne(res =>{
+                .then(res =>{
                     console.log(res);
                     return fakeRequest("4단계 완료", 500);
                 })
-                .thne(res =>{
+                .then(res =>{
                     console.log(res);
                 })
         }

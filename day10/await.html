@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <title>await 실습</title>
+</head>
+
+<body>
+    <h1>await 실습</h1>
+    <div id="result"></div>
+
+    <script>
+        const result = document.getElementById("result");
+
+        function fetchDataFromServer() { // 회원 정보
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve({ name: "이름", age: 28 });
+                }, 2000);
+            });
+        }
+
+        function fetchDataFromServer2() { // 게시글 정보
+            return new Promise((resolve, reject) => {
+                setTimeout(() => {
+                    resolve({ title: "제목", content: "내용" });
+                }, 2000);
+            });
+        }
+
+        /*
+        1. async / await 기본 구조
+        async 함수 내 에서만 await 사용 가능
+        await는 Promise가 완료될 떄까지 기다린다.
+        */
+
+        async function getUserInfo() {
+            try {
+                result.innerHTML += "서버에서 데이터 받아오는 중...<br>";
+                // await : Promise 가 resolve 될 때까지 기다린다.
+                const data = await fetchDataFromServer();
+
+                // 위의 await 가 완료 된 후 아래 코드 실행
+                result.innerHTML += `서버에서 받은 데이터 : 이름 = ${data.name}, 나이 = ${data.age}<br>`;
+
+                // await : Promise 가 resolve 될 때까지 기다린다.
+                const data2 = await fetchDataFromServer2();
+
+                // 위의 await 가 완료 된 후 아래 코드 실행
+                result.innerHTML += `서버에서 받은 데이터 : 제목 = ${data2.title}, 내용 = ${data2.content}<br>`;
+            } catch (err) {
+                //Promise가 reject 되면 catch로 처리
+                result.innerHTML += `오류 발생 : ${err}<br>`;
+            } finally {
+                console.log("api 종료");
+            }
+        }
+
+        /*
+        2. 기존 then() 방식과 비교 : then() 으로 처리할 때는 코드가 중첩되거나 길어질 수 있다
+        */
+        function getUserInfoThen() {
+            result.innerHTML += "서버에서 데이터 받아오는 중...(then)<br>";
+
+            fetchDataFromServer()
+                .then((data) => {
+                    result.innerHTML += `then 방식 : 이름 = ${data.name}, 나이 = ${data.age}<br>`;
+                })
+                .catch((err) => {
+                    result.innerHTML += `then 오류 발생 : ${err}<br>`;
+                })
+                .finally(() => {
+                    console.log("api 종료");
+                })
+        }
+
+        getUserInfo();
+        getUserInfoThen();
+
+    </script>
+</body>
+
+</html>

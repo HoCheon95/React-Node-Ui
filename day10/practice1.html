@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>AJAX 특징 실습</title>
+</head>
+
+<body>
+
+
+    <h1>async await 문제</h1>
+
+    <script>
+        /*
+        문제 1.순차 실행
+
+        설명:
+        1)fetchData라는 비동기 함수가 있습니다.
+        2)1초 후 데이터를 반환하는 함수입니다.
+        3)main 함수 안에서 async/await를 이용해 순차적으로 데이터를 가져와 출력하세요.
+
+        실행 예시:
+        데이터 1
+        데이터 2
+        */
+
+        //코드 틀
+
+        function fetchData(id) {
+            return new Promise((resolve) => {
+                setTimeout(() => resolve(`데이터 ${id}`), 1000);
+            });
+        }
+
+        async function main() {
+            // 여기에 작성
+            const data1 = await fetchData(1);
+            const data2 = await fetchData(2);
+            console.log(data1);
+            console.log(data2);
+        }
+
+        main();
+
+
+        /*
+        문제 2.병렬 실행
+
+        설명:
+        1)fetchData 함수를 사용하여 데이터를 동시에 가져와 모두 가져온 뒤 배열로 출력하세요.
+        2)순차적으로 기다리지 않고 병렬 실행(Promise.all 사용)
+
+        실행 예시:
+
+        ["데이터 1", "데이터 2", "데이터 3"]
+        */
+        function fetchData(id) {
+            return new Promis((resolve) => {
+                setTimeout(() => resolve(`데이터 ${id}`), 1000);
+            });
+        }
+        function fetchData(id) {
+            return new Promise((resolve) => {
+                setTimeout(() => resolve(`데이터 ${id}`), 1000);
+            });
+        }
+        function fetchData(id) {
+            return new Promise((resolve) => {
+                setTimeout(() => resolve(`데이터 ${id}`), 1000);
+            });
+        }
+
+        Promise.all([fetchData(1), fetchData(2), fetchData(3)])
+            .then((result) => {
+                console.log(result);
+            });
+
+    </script>
+</body>
+
+</html>

@@ -20,8 +20,9 @@ export default defineConfig([
       globals: globals.browser,
     },
     rules: {
-      "@typescript-eslint/no-unused-vars": "warn",
-      "prefer-const": "warn",
+      "@typescript-eslint/no-unused-vars": "off",
+      // 전역에서 'prefer-const' 규칙을 비활성화(warn 또는 off)
+      "prefer-const": "off",
     },
   },
 ])

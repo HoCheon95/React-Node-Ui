@@ -1,4 +1,4 @@
-import Home from "./day14/Home.tsx"
+import { Problem2 } from "./day16/practice1.tsx";
 
 function App() {
 
@@ -14,8 +14,7 @@ function App() {
 
   return (
     <>
-      <h1>하이!</h1>
-      <Home/>
+      <Problem2/>
     </>
   )
 }

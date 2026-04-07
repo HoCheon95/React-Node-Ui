@@ -1,4 +1,4 @@
-import { Problem2 } from "./day16/practice1.tsx";
+import UserProfile from "./day17/StateCompress.tsx";
 
 function App() {
 
@@ -14,7 +14,7 @@ function App() {
 
   return (
     <>
-      <Problem2/>
+      <UserProfile/>
     </>
   )
 }

@@ -1,4 +1,4 @@
-import UserProfile from "./day17/StateCompress.tsx";
+import SearchExample from "./day18/Practice1.tsx";
 
 function App() {
 
@@ -12,9 +12,13 @@ function App() {
    * 5. 루트 컴포넌트는 반드시 단 하나여야 한다.(SPA)
    */
 
+
+  
+
+
   return (
     <>
-      <UserProfile/>
+      <SearchExample/>
     </>
   )
 }

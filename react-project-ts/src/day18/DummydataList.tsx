@@ -6,22 +6,31 @@ import { useEffect, useState } from "react";
 
 // userEffect 첫 실행 시 setState 실행
 
-// .map을 사용해서 JSX 에서 데이터 시가고하
+// .map을 사용해서 JSX 에서 데이터 시각화
 
 // 해당 컴포넌트 완성 후 루트 컴포넌트에 import 한 후 정상 작동 확인
 function DummydataList() {
     const [dataList, setDataList] = useState<string[]>([]);
 
     useEffect(()=>{
-        const dummyData = ['데이터1', '데이터2', '데이터3'];
+        const fetchData = async () => {
+            const dummyData = ['데이터1', '데이터2', '데이터3'];
+            setDataList(dummyData);
+        };
 
-        
-        
-    },[dataList]);
-    return(
+        fetchData();
+    },[]);
+
+    return (
         <div>
-            
+            <h3>더미 데이터 목록</h3>
+            <ul>
+                {/* .map을 사용해서 JSX 에서 데이터 시각화 */}
+                {dataList.map((item, index) => ( 
+                    <li key={index}>{item}</li> // 배열의 각 요소를 리스트 형태로 출력한다
+                ))}
+            </ul>
         </div>
-    )
+    );
 }
 export default DummydataList

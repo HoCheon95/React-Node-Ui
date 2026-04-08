@@ -1,3 +1,4 @@
+import DummydataList from "./day18/DummydataList.tsx";
 import SearchExample from "./day18/Practice1.tsx";
 
 function App() {
@@ -18,7 +19,7 @@ function App() {
 
   return (
     <>
-      <SearchExample/>
+      <DummydataList/>
     </>
   )
 }

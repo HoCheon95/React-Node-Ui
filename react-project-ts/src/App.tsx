@@ -1,5 +1,4 @@
-import DummydataList from "./day18/DummydataList.tsx";
-import SearchExample from "./day18/Practice1.tsx";
+import JsonFetchExample from "./day19/Json사용시주의점.tsx";
 
 function App() {
 
@@ -19,7 +18,7 @@ function App() {
 
   return (
     <>
-      <DummydataList/>
+      <CreateComment/>
     </>
   )
 }

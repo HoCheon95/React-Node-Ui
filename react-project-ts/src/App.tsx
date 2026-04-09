@@ -1,4 +1,4 @@
-import JsonFetchExample from "./day19/Json사용시주의점.tsx";
+import CreateComment from "./day19/JsonPlaceholder3.tsx";
 
 function App() {
 

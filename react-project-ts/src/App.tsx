@@ -1,4 +1,4 @@
-import CreateComment from "./day19/JsonPlaceholder3.tsx";
+import TodoDelete from "./day19/Delete.tsx";
 
 function App() {
 
@@ -18,7 +18,7 @@ function App() {
 
   return (
     <>
-      <CreateComment/>
+      <TodoDelete/>
     </>
   )
 }

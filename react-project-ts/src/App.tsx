@@ -1,4 +1,4 @@
-import TodoDelete from "./day19/Delete.tsx";
+import PracComp from "./day20/practice1.tsx"
 
 function App() {
 
@@ -18,7 +18,7 @@ function App() {
 
   return (
     <>
-      <TodoDelete/>
+      <PracComp/>
     </>
   )
 }

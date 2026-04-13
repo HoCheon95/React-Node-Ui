@@ -34,4 +34,12 @@ export default function UpdateTodo() {
     // setState
     setTodo(data);
   };
+  // button 컴포넌트에 onClick 이벤트로 updateTitle 을 입력하고
+  // todo 가 있을 경우 todo의 title 만 jsx 에 시각화하세요
+  return (
+    <div>
+      {todo && <li>{todo.title}</li>}
+      <button onClick={()=>updateTitle()}>title 업데이트</button>
+    </div>
+  )
 }

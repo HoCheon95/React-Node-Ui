@@ -1,4 +1,4 @@
-import PracComp from "./day20/practice1.tsx"
+import EventControlExample from "./day21/Stop.tsx"
 
 function App() {
 
@@ -18,7 +18,7 @@ function App() {
 
   return (
     <>
-      <PracComp/>
+      <EventControlExample/>
     </>
   )
 }
